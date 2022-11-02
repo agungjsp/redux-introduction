@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteContact, detailContact, getContacts } from "../../redux/actions/contactAction";
 
 export default function ListContact() {
     const { contacts } = useSelector((state) => state.contact);
+    const [isError, setIsError] = useState(false);
+    const [isErrorDetail, setIsErrorDetail] = useState(false);
+    const [isErrorDelete, setIsErrorDelete] = useState(false);
     const dispatch = useDispatch();
 
     useEffect(() => {
         console.log("1. ListContact useEffect");
-        dispatch(getContacts());
+        dispatch(getContacts(setIsError));
     }, [dispatch]);
 
     return (
@@ -28,7 +31,7 @@ export default function ListContact() {
                                     color: "#fff",
                                     marginLeft: 12,
                                 }}
-                                onClick={() => dispatch(detailContact(contact.id))}
+                                onClick={() => dispatch(detailContact(contact.id, setIsErrorDetail))}
                             >
                                 <b>Update</b>
                             </button>
@@ -41,13 +44,18 @@ export default function ListContact() {
                                     color: "#fff",
                                     marginLeft: 12,
                                 }}
-                                onClick={() => dispatch(deleteContact(contact.id))}
+                                onClick={() => dispatch(deleteContact(contact.id, setIsErrorDelete))}
                             >
                                 <b>Delete</b>
                             </button>
                         </p>
+                        <small style={{ color: "red" }}>
+                            {isErrorDelete || isErrorDetail ? "Something went wrong. Please try again." : ""}
+                        </small>
                     </div>
                 ))
+            ) : isError ? (
+                <p>Something went wrong. Please try again.</p>
             ) : (
                 <p>No data contact</p>
             )}
