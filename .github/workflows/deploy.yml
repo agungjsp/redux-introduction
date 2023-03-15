@@ -18,4 +18,4 @@ jobs:
         with:
           subcommand: "push"
           project: "reduxintroduction"
-          entrypoint: "./main.jsx" # TODO: update entrypoint
+          entrypoint: "src/main.jsx" # TODO: update entrypoint
